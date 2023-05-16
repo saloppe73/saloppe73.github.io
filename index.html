@@ -1,1 +1,176 @@
-soon ...
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>YOUR BITCOIN BANK</title>
+    <link rel="stylesheet" href="/static/darkly/css/bootstrap.css">
+    <script src="/static/darkly/js/bootstrap.bundle.js"></script>
+</head>
+
+<body>
+<div class="container-fluid" style="margin-top: 3%;">
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%;">
+      <div class="card-header"><h2><p class="text-success text-center">Deine eigene Bitcoin Bank</p></h2></div>
+      <div class="card-body">
+        <h4 class="card-title">Was soll das Ganze?</h4>
+        <p class="card-text">
+            Dieser Workshop soll dazu dienen, ein tieferes Verständnis für die Funktionsweise des Bitcoin/Lightning Netzwerkes zu bekommen.
+            Am Ende werden wir eine Bitcoin Full Node und eine Lightning Node am laufen haben. Wir werden verschiedene Lightning Kanäle öffnen
+            und dafür sorgen, dass diese Kanäle immer ausbalanciert sind. Wir werden regelmässige Gebühren im Lightning Netzwerk generieren
+            um die Stromkosten zu covern. Als Hardware benutzen wir einen RaspberryPi 400 mit 4BG RAM, 32GB SD-Karte und eine externe 1TB SSD.
+            Da es sich bei den Teilnehmern um technisch interessierte Jugendliche handelt, wird die benötigte Software selbst erstellt und
+            es wird auf verschiedene Programmiersprachen bzw. OpenSource/Proprietäre Software eingegangen. Das ganze Projekt ist fortlaufend - daher
+            speziell zu Beginn nicht vollständig. Lets start!
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="/images/raspi400.jpg" class="card-img-top" alt="Raspberry 400" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Unser Raspberry 400.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="/images/neofetch.png" class="card-img-top" alt="NeoFetchData" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Kurzer Überblick unseres Systems.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Wir verzichten hier auf die detaillierte Vorgehensweise um den Raspi mit einem Betriebssystem zu bespielen. Dafür gibt es
+            genug Tutorials im Netz. Um die Last gering zu halten deaktivieren wir sämtliche nicht benötigte Programme. Wir lassen uns alle
+            laufenden Services anzeigen:
+        </p>
+        <p class="card-text text-success">sudo service --status-all</p>
+        <p class="card-text">
+            Wir deaktivieren den/die nicht benötigten Programme (hier cups):
+        </p>
+        <p class="card-text text-success">sudo systemctl stop cups && sudo systemctl disable cups</p>
+        <p class="card-text">
+            Nun kurz eine grundlegende Überlegung: wollen wir anonym bleiben? Klare Antwort: Ja. Wir installieren daher als erstes Tor.
+            Vorher installieren wir alle Pakete, welche wir später noch brauchen werden:
+        </p>
+        <p class="card-text text-success">sudo apt install git openssl build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 make automake cmake curl g++ binutils bsdmainutils pkg-config patch bison nyx ufw geany</p>
+        <p class="card-text">Wir aktivieren die Firewall und deaktivieren den Swap:</p>
+        <p class="card-text text-success">sudo ufw enable && sudo swapoff -a</p>
+        <p class="card-text">Wir clonen und installieren Tor:</p>
+        <p class="card-text text-success">mkdir .git && cd .git && git clone --recursive https://github.com/torproject/tor.git && cd tor && ./autogen.sh && ./configure --disable-asciidoc && make -j3</p>
+        <p class="card-text">Die ausführbare Datei befindet sich nun unter ~/src/app. Wir kopieren die Konfigurationsdatei in diesen Pfad, wechseln in den Pfad und öffnen die Datei:</p>
+        <p class="card-text text-success">mv src/config/torrc.sample.in src/app/torrc && cd src/app && nano torrc</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="/images/torrc.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text">Wir lassen Tor nicht als Daemon laufen um die Ausgabe verfolgen zu können, wir ändern den Pfad
+            zu einem vorher auf der externen SSD erstellten Ordner, wir definieren den ControlPort (default 9051) und aktivieren die CookieAuth.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="/images/tor_running.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text">Danach starten wir Tor mit:</p>
+            <p class="card-text text-success">./tor -f ./torrc</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Das wäre geschafft! Tor läuft nun und wir können uns endlich dem eigentlichen Thema Bitcoin widmen. Die Grundlage aller weiteren Apps ist
+            ein Bitcoin Full Node. Dies bedeutet, dass unser Bitcoin Knoten ausgehende und ankommende Verbindungen zulässt. Wie zuvor clonen wir den
+            Quellcode und wechseln dann in das entsprechende Verzeichnis:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone --recursive https://github.com/bitcoin/bitcoin.git && cd bitcoin</p>
+        <p class="card-text">
+            Falls eine bestimmte Version gewünscht wird muss diese ausgecheckt werden (z.b. git checkout 24.x). Wie bereits angedeutet soll es bei diesem
+            Workshop auch um das Verständnis gehen. Daher erstellen wir auch alle Abhängigkeiten für unsere Bitcoin Full Node selbst. Dazu wechseln wir in
+            das ensprechende Verzeichnis und starten den "build process":
+        </p>
+        <p class="card-text text-success">cd depends && make -j3</p>
+        <p class="card-text">
+            Das kann nun eine Weile dauern. In der Zwischenzeit wurden Fragen beantwortet, der Unterschied zwischen OpenSource und Proprietär erklärt und
+            kurz auf die Programmiersprachen C und Python eingegangen. Wenn der build process abgeschlossen ist wechseln wir zurück in das Hauptverzeichnis
+            und starten den build process für unseren Bitcoin Knoten. ACHTUNG: Falls der geneigte Leser ein anderes Betriebssystem installiert hat (z.b. arm)
+            muss der CONFIG Pfad natürlich geändert werden:
+        </p>
+        <p class="card-text text-success">cd .. && autogen.sh && CONFIG_SITE=$PWD/depends/aarch64-unknown-linux-gnu/share/config.site ./configure && make -j3</p>
+        <p class="card-text">
+            Auch das dauert nun eine Weile auf unserem kleinen Raspberry. Falls sich der ein oder andere Profi jetzt fragt warum kein cross compiling: next level, next
+            time. In der Zwischenzeit legen wir uns auf der SSD einen Ordner an, der unsere Config, unsere Wallet, und die komplette Blockchain enthalten wird.
+            Wir nutzen nicht die devtools um die Konfigurationsdatei zu erstellen. Wir erstellen sie manuell. Vorher erstellen wir ein Zertifikat für den späteren
+            RPC-Zugriff. Beide Dateien gehören in den erstellten Bitcoin (Data) Ordner. Wir öffnen ein neues Terminal:
+        </p>
+        <p class="card-text text-success">openssl genrsa -out btc.pem 2048 && openssl req -new -x509 -nodes -sha256 -days 3650 -key btc.pem > btc.cert</p>
+        <p class="card-text">
+            Danach erstellen wir unsere Konfigurationsdatei (s.u.):
+        </p>
+        <p class="card-text text-success">nano path-to-your-data-directory/bitcoin.conf</p>
+        <p class="card-text">
+            Wenn der build process abgeschlossen ist befinden sich die ausführbaren Dateien unter ~/src bzw. ~/src/qt (GUI). Wir wollen
+            hier die GUI starten und die Logs separat ausgeben:
+        </p>
+        <p class="card-text text-success">cd src/qt && bitcoin-qt -datadir=your-path-to-your-bitcoin-data</p>
+        <p class="card-text">Wir öffnen ein neues Terminal um die Logs auszugeben (optional):</p>
+        <p class="card-text text-success">cd your-path-to-your-bitcoin-data && tail -f debug.log</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="/images/btc_conf.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Beispiel für unsere Bitcoin Konfigurationsdatei.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="/images/coregui.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Bitcoin Core mit Proxy über Tor und v3 Onion Adresse.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            So weit - so gut. Unser Full Node verbindet sich jetzt automatisch NUR über Tor und zusätzlich nur zu Onion Adressen. Da
+            wir nach aussen nur unsere Onion v3 Adresse zeigen, erfolgen auch alle eingehenden Verbindungen ausschliesslich über Tor. Wir
+            haben zusätzlich htop am laufen um die Last im Auge zu behalten, der Ticker ist ein simples Python Script, dass die aktuellen
+            Kurse von Kraken holt und ein paar Daten aus Bitcoin Core ausliesst. Wenn der geneigte Leser uns bis hierher gefolgt ist, müsste
+            der Desktop nun ungefähr so aussehen:
+        </p>
+        <img src="/images/midfinal.png" class="card-img-top" alt="Desktop" style="max-width: 100%; max-height: 80%;">
+      </div>
+    </div>
+
+    <p class="card-text text-success text-center" style="margin: 1%;"><b>... will be continued soon ...</b></p>
+
+</div>
+</body>
+</html>
