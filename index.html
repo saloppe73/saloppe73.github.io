@@ -32,7 +32,7 @@
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
-          <img src="static/images/raspi400.jpg" class="card-img-top" alt="Raspberry 400" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/raspi400.jpg" class="card-img-top" alt="Raspberry 400" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Unser Raspberry 400.</p>
           </div>
@@ -40,7 +40,7 @@
       </div>
       <div class="col-sm-6">
         <div class="card border-success h-100" style="width: 90%;">
-          <img src="static/images/neofetch.png" class="card-img-top" alt="NeoFetchData" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/neofetch.png" class="card-img-top" alt="NeoFetchData" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Kurzer Überblick unseres Systems.</p>
           </div>
@@ -64,7 +64,7 @@
             Nun kurz eine grundlegende Überlegung: wollen wir anonym bleiben? Klare Antwort: Ja. Wir installieren daher als erstes Tor.
             Vorher installieren wir alle Pakete, welche wir später noch brauchen werden:
         </p>
-        <p class="card-text text-success">sudo apt install git openssl build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 make automake cmake curl g++ binutils bsdmainutils pkg-config patch bison nyx ufw geany</p>
+        <p class="card-text text-success">sudo apt install git openssl build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 make automake cmake curl g++ binutils bsdmainutils pkg-config patch bison nyx ufw geany keepassxc</p>
         <p class="card-text">Wir aktivieren die Firewall und deaktivieren den Swap:</p>
         <p class="card-text text-success">sudo ufw enable && sudo swapoff -a</p>
         <p class="card-text">Wir clonen und installieren Tor:</p>
@@ -77,16 +77,18 @@
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
-          <img src="static/images/torrc.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/torrc.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text">Wir lassen Tor nicht als Daemon laufen um die Ausgabe verfolgen zu können, wir ändern den Pfad
-            zu einem vorher auf der externen SSD erstellten Ordner, wir definieren den ControlPort (default 9051) und aktivieren die CookieAuth.</p>
+                zu einem vorher auf der externen SSD erstellten Ordner, wir definieren den ControlPort (default 9051) und aktivieren die CookieAuth. Ein
+                Beispiel kann <a href="/contrib/torrc">hier</a> gefunden werden.
+            </p>
           </div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="card border-success h-100" style="width: 90%;">
-          <img src="static/images/tor_running.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/tor_running.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text">Danach starten wir Tor mit:</p>
             <p class="card-text text-success">./tor -f ./torrc</p>
@@ -124,7 +126,7 @@
         </p>
         <p class="card-text text-success">openssl genrsa -out btc.pem 2048 && openssl req -new -x509 -nodes -sha256 -days 3650 -key btc.pem > btc.cert</p>
         <p class="card-text">
-            Danach erstellen wir unsere Konfigurationsdatei (s.u.):
+            Danach erstellen wir unsere Konfigurationsdatei (Bild s.u.). Ein Beispiel kann <a href="/contrib/bitcoin.conf">hier</a> eingesehen werden:
         </p>
         <p class="card-text text-success">nano path-to-your-data-directory/bitcoin.conf</p>
         <p class="card-text">
@@ -140,7 +142,7 @@
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
-          <img src="static/images/btc_conf.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/btc_conf.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Beispiel für unsere Bitcoin Konfigurationsdatei.</p>
           </div>
@@ -148,7 +150,7 @@
       </div>
       <div class="col-sm-6">
         <div class="card border-success h-100" style="width: 90%;">
-          <img src="static/images/coregui.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <img src="/images/coregui.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Bitcoin Core mit Proxy über Tor und v3 Onion Adresse.</p>
           </div>
@@ -165,7 +167,96 @@
             Kurse von Kraken holt und ein paar Daten aus Bitcoin Core ausliesst. Wenn der geneigte Leser uns bis hierher gefolgt ist, müsste
             der Desktop nun ungefähr so aussehen:
         </p>
-        <img src="static/images/midfinal.png" class="card-img-top" alt="Desktop" style="max-width: 100%; max-height: 80%;">
+        <img src="/images/midfinal.png" class="card-img-top" alt="Desktop" style="max-width: 100%; max-height: 80%;">
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Als nächstes installieren wir einen Lightning Knoten. Lightning ist eine "second layer solution" und sitzt "on top" auf der Bitcoin
+            Blockchain ("layer one"). Es gibt dafür (wie bei Bitcoin Knoten) verschiedene Lösungen. Am weitesten verbreitet sind
+            <a href="https://github.com/ElementsProject/lightning">CLN</a> von Blockstream und <a href="https://github.com/lightningnetwork/lnd">LND</a>
+            von LightningLabs. Eigentlich wollte ich CLN wählen - leider funktioniert nach dem letzten Update keines der benötigten Plugins bei
+            meinem persönlichen Node. Daher nehme ich LND. LND ist in <a href="https://golang.google.cn/">Go</a> geschrieben. Go wurde von Google
+            entwickelt und muss erst auf unserem Raspi installiert und konfiguriert werden. LND benötigt zum aktuellen Zeitpunkt golang v1.19. Wir
+            überprüfen kurz welche Version in den Paketquellen zur Verfügung steht:
+        </p>
+        <p class="card-text text-success">apt policy golang</p>
+        <p class="card-text">
+            Leider steht aktuell nur Version 1.15 in den offiziellen Paketquellen zur verfügung. Wir müssen Go also manuell installieren. Vorher
+            klonen wir den Quellcode von LND auf unseren Raspi:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone --recursive https://github.com/lightningnetwork/lnd.git && cd lnd</p>
+        <p class="card-text">
+            Um die aktuelle Version von Go zu installieren, navigieren wir zu <a href="https://go.dev/dl">Google Downloads</a>
+            und laden uns die aktuelle Version (hier 1.20) herunter. Wir öffnen ein neues Terminalfenster und wechseln in das Download Verzeichnis:
+        </p>
+        <p class="card-text text-success">cd $HOME/Downloads && wget https://go.dev/dl/go1.20.4.linux-arm64.tar.gz</p>
+        <p class="card-text">Wir entpacken die Datei in unserem lokalen Userverzeichnis:</p>
+        <p class="card-text text-success">sudo tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz && rm go1.20.4.linux-arm64.tar.gz</p>
+        <p class="card-text">
+            Damit unser Raspi auch weiss wo er Go findet und wohin er die ausführbaren Dateien legen soll, müssen wir ihm entprechende Hinweise geben. Dafür
+            geben wir folgendes in unserem Terminal ein:
+        </p>
+        <p class="card-text text-success">cd .. && mkdir go && cd .git/lnd && export PATH=$PATH:/usr/local/go/bin && export GOPATH=$HOME/go</p>
+        <p class="card-text">Go ist nun erfolgreich installiert. Bei Eingabe von</p>
+        <p class="card-text text-success">echo $PATH && echo $GOPATH</p>
+        <p class="card-text">werden beide Pfade angezeigt. Wir können nun LND erstellen mit:</p>
+        <p class="card-text text-success">make release-install -j3</p>
+        <p class="card-text">
+            Nach Beendigung befinden sich unsere ausführbaren Dateien im Ordner ~/go/bin. Bevor wir LND nun erstmals starten können, müssen wir als erstes
+            unsere Konfigurationsdatei anpassen. Wir erstellen für unseren LND Knoten auf unserer externen HD einen Ordner und kopieren die Konfigurationsdatei hinein.
+            Entweder nehmen wir den Datei Manager vom Desktop oder im Terminal mit:
+        </p>
+        <p class="card-text text-success">mkdir path-to-your-external-hd/.lnd && mv ./sample-lnd.conf path-to-your-external-hd/.lnd/lnd.conf</p>
+        <p class="card-text">
+            Nun passen wir die Konfigurationsdatei noch an. Ein Beispiel kann <a href="/contrib/lnd.conf">hier</a> gefunden werden. Viele Voreinstellungen können übernommen werden.
+            Wichtig sind die Einstellungen für unseren Bitcoin Full Node (Pfad zum Ordner/Konfig) und die Einstellungen für Tor. Tor muss aktiviert werden. Nach
+            einer Abstimmung lautet der Alias unseres LND Knotens <q>WhiteDeer</q>. Nun starten wir LND das Erste mal mit:
+        </p>
+        <p class="card-text text-success">$HOME/go/bin/lnd --lnddir=path-to-your-external-hd/.lnd</p>
+        <p class="card-text">
+            Nachdem der Daemon gestartet wurde, wird nach dem Passwort für die Wallet gefragt. Damit ist <b class="text-danger">nicht</b> die Wallet unseres Bitcoin FN gemeint. LND erstellt
+            eine eigene Wallet in unserem LND Ordner auf der externen HD. Da wir noch keine Wallet haben, erstellen wir eine neue Wallet. Dazu öffnen wir ein neues
+            Fenster in unserem Terminal und starten lncli (<q>command line interface</q>) mit:
+        </p>
+        <p class="card-text text-success">$HOME/go/bin/lncli --lnddir=path-to-your-external-hd/.lnd create</p>
+        <p class="card-text">
+            Es wird nach dem Passwort gefragt und nach Initialisierung auch ein 24-stelliger Mnemonic Seed angezeigt. Ich sage es gleich vorab: das ist <b class="text-danger">kein bip39 seed!</b>
+            In dem Workshop wurde nun auf bip32/bip39 eingegangen und auf die (Nicht-) Kontrolle der Prüfziffer. Im späteren Verlauf dieses Workshops importieren wir die LND-Wallet in unseren Full Node - auch
+            um Wiederherstellung zu demonstrieren, falls Daten verloren gehen oder zerstört werden. Im Workshop werden alle sensiblen Daten mittels <a href="https://de.wikipedia.org/wiki/KeePassXC">KeePassXC</a>
+            gespeichert. Es dauert nun eine kleine Weile bis unser LND mit dem Netzwerk synchronisiert ist. Wir können eine allgemeine Übersicht mit folgender Eingabe bekommen:
+        </p>
+        <p class="card-text text-success">$HOME/go/bin/lncli --lnddir=path-to-your-external-hd/.lnd getinfo</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="/images/lnd.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">LND synchronisiert mit dem Netzwerk</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="/images/lncli.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center"><q>getinfo</q> Ausgabe in der CLI. Synchronisiert mit der Bitcoin Blockchain aber noch nicht mit dem Lightning Netzwerk. Unter <q>uris</q> unsere Tor Onion URI.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Im späteren Verlauf dieses Workshops installieren wir eine graphische Benutzeroberfläche um einen gefälligen Überblick zu bekommen. Wir überlassen für heute
+            LND seiner Synchronisation. Das Wichtigste haben wir nun installiert. Um aber tatsächlich unsere Vorgaben erfüllen zu können, müssen wir noch einiges tun.
+        </p>
       </div>
     </div>
 
