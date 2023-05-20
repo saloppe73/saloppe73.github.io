@@ -81,7 +81,7 @@
           <div class="card-body">
             <p class="card-text">Wir lassen Tor nicht als Daemon laufen um die Ausgabe verfolgen zu können, wir ändern den Pfad
                 zu einem vorher auf der externen SSD erstellten Ordner, wir definieren den ControlPort (default 9051) und aktivieren die CookieAuth. Ein
-                Beispiel kann <a href="/contrib/torrc">hier</a> gefunden werden.
+                Beispiel kann <a href="static/contrib/torrc">hier</a> gefunden werden.
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@
         </p>
         <p class="card-text text-success">openssl genrsa -out btc.pem 2048 && openssl req -new -x509 -nodes -sha256 -days 3650 -key btc.pem > btc.cert</p>
         <p class="card-text">
-            Danach erstellen wir unsere Konfigurationsdatei (Bild s.u.). Ein Beispiel kann <a href="/contrib/bitcoin.conf">hier</a> eingesehen werden:
+            Danach erstellen wir unsere Konfigurationsdatei (Bild s.u.). Ein Beispiel kann <a href="static/contrib/bitcoin.conf">hier</a> eingesehen werden:
         </p>
         <p class="card-text text-success">nano path-to-your-data-directory/bitcoin.conf</p>
         <p class="card-text">
@@ -211,7 +211,7 @@
         </p>
         <p class="card-text text-success">mkdir path-to-your-external-hd/.lnd && mv ./sample-lnd.conf path-to-your-external-hd/.lnd/lnd.conf</p>
         <p class="card-text">
-            Nun passen wir die Konfigurationsdatei noch an. Ein Beispiel kann <a href="/contrib/lnd.conf">hier</a> gefunden werden. Viele Voreinstellungen können übernommen werden.
+            Nun passen wir die Konfigurationsdatei noch an. Ein Beispiel kann <a href="static/contrib/lnd.conf">hier</a> gefunden werden. Viele Voreinstellungen können übernommen werden.
             Wichtig sind die Einstellungen für unseren Bitcoin Full Node (Pfad zum Ordner/Konfig) und die Einstellungen für Tor. Tor muss aktiviert werden. Nach
             einer Abstimmung lautet der Alias unseres LND Knotens <q>WhiteDeer</q>. Nun starten wir LND das Erste mal mit:
         </p>
