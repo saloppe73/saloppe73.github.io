@@ -81,7 +81,7 @@
           <div class="card-body">
             <p class="card-text">Wir lassen Tor nicht als Daemon laufen um die Ausgabe verfolgen zu können, wir ändern den Pfad
                 zu einem vorher auf der externen SSD erstellten Ordner, wir definieren den ControlPort (default 9051) und aktivieren die CookieAuth. Ein
-                Beispiel kann <a href="static/contrib/torrc">hier</a> gefunden werden.
+                Beispiel kann <a href="#">hier</a> gefunden werden.
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@
         </p>
         <p class="card-text text-success">openssl genrsa -out btc.pem 2048 && openssl req -new -x509 -nodes -sha256 -days 3650 -key btc.pem > btc.cert</p>
         <p class="card-text">
-            Danach erstellen wir unsere Konfigurationsdatei (Bild s.u.). Ein Beispiel kann <a href="static/contrib/bitcoin.conf">hier</a> eingesehen werden:
+            Danach erstellen wir unsere Konfigurationsdatei (Bild s.u.). Ein Beispiel kann <a href="#">hier</a> eingesehen werden:
         </p>
         <p class="card-text text-success">nano path-to-your-data-directory/bitcoin.conf</p>
         <p class="card-text">
@@ -142,7 +142,7 @@
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
-          <img src="static/images/btc_conf.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <img src="static/images/btc_conf.png" class="card-img-top" alt="btc config" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Beispiel für unsere Bitcoin Konfigurationsdatei.</p>
           </div>
@@ -150,7 +150,7 @@
       </div>
       <div class="col-sm-6">
         <div class="card border-success h-100" style="width: 90%;">
-          <img src="static/images/coregui.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <img src="static/images/coregui.png" class="card-img-top" alt="core gui" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">Bitcoin Core mit Proxy über Tor und v3 Onion Adresse.</p>
           </div>
@@ -211,7 +211,7 @@
         </p>
         <p class="card-text text-success">mkdir path-to-your-external-hd/.lnd && mv ./sample-lnd.conf path-to-your-external-hd/.lnd/lnd.conf</p>
         <p class="card-text">
-            Nun passen wir die Konfigurationsdatei noch an. Ein Beispiel kann <a href="static/contrib/lnd.conf">hier</a> gefunden werden. Viele Voreinstellungen können übernommen werden.
+            Nun passen wir die Konfigurationsdatei noch an. Ein Beispiel kann <a href="#">hier</a> gefunden werden. Viele Voreinstellungen können übernommen werden.
             Wichtig sind die Einstellungen für unseren Bitcoin Full Node (Pfad zum Ordner/Konfig) und die Einstellungen für Tor. Tor muss aktiviert werden. Nach
             einer Abstimmung lautet der Alias unseres LND Knotens <q>WhiteDeer</q>. Nun starten wir LND das Erste mal mit:
         </p>
@@ -235,7 +235,7 @@
     <div class="row">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
-          <img src="static/images/lnd.png" class="card-img-top" alt="tor config" style="max-width: 100%; max-height: 80%;">
+          <img src="static/images/lnd.png" class="card-img-top" alt="lnd" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center">LND synchronisiert mit dem Netzwerk</p>
           </div>
@@ -243,7 +243,7 @@
       </div>
       <div class="col-sm-6">
         <div class="card border-success h-100" style="width: 90%;">
-          <img src="static/images/lncli.png" class="card-img-top" alt="tor running" style="max-width: 100%; max-height: 80%;">
+          <img src="static/images/lncli.png" class="card-img-top" alt="lncli" style="max-width: 100%; max-height: 80%;">
           <div class="card-body">
             <p class="card-text text-center"><q>getinfo</q> Ausgabe in der CLI. Synchronisiert mit der Bitcoin Blockchain aber noch nicht mit dem Lightning Netzwerk. Unter <q>uris</q> unsere Tor Onion URI.</p>
           </div>
@@ -254,8 +254,206 @@
     <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
       <div class="card-body">
         <p class="card-text">
-            Im späteren Verlauf dieses Workshops installieren wir eine graphische Benutzeroberfläche um einen gefälligen Überblick zu bekommen. Wir überlassen für heute
-            LND seiner Synchronisation. Das Wichtigste haben wir nun installiert. Um aber tatsächlich unsere Vorgaben erfüllen zu können, müssen wir noch einiges tun.
+            In der Zwischenzeit importieren wir unsere LND Wallet in Bitcoin Core. Dies dient unserer Sicherheit und sollte immer vorgenommen werden, wenn eine neue Wallet eingerichtet wird.
+            Wie bereits erwähnt ist der 24-stellige mnemonic Seed von LND kein BIP39 Seed sondern ein <i>aezeed cipher Seed</i> inklusive Versionierung. Allerdings wird das von Bitcoin Core nicht akzeptiert. Wir
+            müssen diesen Seed also erst konvertieren. Dazu klonen wir das folgendes Repo und starten die <i>landing page</i>:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone https://github.com/guggero/cryptography-toolkit.git && cd cryptography-toolkit && firefox index.html</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="static/images/aezeed1.png" class="card-img-top" alt="decode mnemonic" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Wir wechseln in das entsprechende Register. Unter <i>Decode mnemonic</i> tragen wir unseren LND mnemonic Seed ein. Dadurch bekommen wir unseren <i>HD Root Key</i>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="static/images/aezeed2.png" class="card-img-top" alt="importwallet" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">
+                Wir wechseln in das Register <i>Import HD wallet into Bitcoin Core</i> und tragen unseren Key in das entsprechende Feld ein. Vorher wechseln wir
+                den <i>Import mode</i> von Bip39 auf Bip32.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Wir kopieren die Daten in ein blankes Textfile und speichern es ab. Nun importieren wir das File in unsere Bitcoin Core Wallet mit
+        </p>
+        <p class="card-text text-success">importwallet <i>path-to-your-file</i></p>
+        <p class="card-text">
+            Sämtliche LND Transaktionen werden nun auch in Bitcoin Core angezeigt. Hinzu kommt, dass es bei Datenverlust wichtig ist, eine Wallet wiederherstellen zu können.
+            Paranoide Nutzer können das File mit folgendem Befehl sicher löschen:
+        </p>
+        <p class="card-text text-success">shred -fuzv <i>path-to-your-file</i></p>
+        <p class="card-text">
+            Nicht vergessen ein neues Backup der Bitcoin Core Wallet anzulegen! Als nächstes überlegen wir uns: <i>Was wollen wir mit unserem Node erreichen? Richtig! Netzwerk unterstützen
+            und ein paar Sats generieren!</i> Wenn wir das erste Mal Funds zu unserem Node senden und einen Kanal eröffnen, haben wir lediglich <i>outbound Liquidy</i>. Das heisst, wir können
+            ein paar Sats senden, aber keine empfangen. Daher sollte ein Kanal möglichst <i>ausbalanciert</i> sein. Um dies zu erreichen gibt es mehrere Möglichkeiten. Eine (von mir bevorzugte)
+            sind sogenannte <i>submarine swaps</i>. Dies sind <i>atomic swaps</i> zwischen Layer One (Bitcoin Blockchain) und Layer 2 (Lightnig Network). Der Term <q>atomic</q> stammt dabei aus
+            der Computerwissenschaft und beschreibt einen Prozess, der entweder wie geplant ausgeführt wird - oder gar nicht. Im Workshop wurde an dieser Stelle ausführlich das Prozedere eines
+            <i>atomic swaps</i> beschrieben (HTLC/WITHDRAW/REFUND/PREIMAGE/REVEALING OVER BLOCKCHAIN/CROSS CHAIN ATOMIC SWAPS). Wir werden hier zwei Möglichkeiten (Loop & Boltz) vorstellen.
+        </p>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Loop von LightningLabs ist ein <i>atomic submarine</i> Swap Service. Wir clonen den Quellcode:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone --recursive https://github.com/lightninglabs/loop.git && cd loop/cmd</p>
+        <p class="card-text">
+            Loop ist in Golang geschrieben. Go haben wir bereits bei der Installation von LND unserem OS hinzugefügt. Wir zeigen <i>Loop</i> an wo Golang liegt und wohin er die ausführbaren Dateien
+            kopieren soll. Anschliessend beginnen wir mit dem <i>build process</i>:
+        </p>
+        <p class="card-text text-success">export PATH=$PATH:/usr/local/go/bin && export GOPATH=$HOME/go && go install ./...</p>
+        <p class="card-text">
+            Anschliessend finden wir zwei neue ausführbare Dateien in unserem Go Folder. <i>loopd</i> ist der <i>daemon</i> welcher immer im Hintergrund läuft. <i>loop</i> ist der dazugehörige <i>Client</i>
+            für die Interaktion. Um den Daemon erfolgreich zu starten benötigt er folgende Angaben: einen Ordner um die Daten zu speichern sowie die jeweiligen Pfade zu <i>tls.cert</i> und <i>admin.macaroon</i> von LND. Wir starten <i>loopd</i>:
+        </p>
+        <p class="card-text text-success">cd $HOME/go/bin/loopd --loopdir=PATH-TO-YOUR-LOOP-DIR --lnd.tlspath=PATH-TO-YOUR-LND-DIR/tls.cert --lnd.macaroonpath=PATH-TO-YOUR-LND-DIR/data/chain/bitcoin/mainnet/admin.macaroon</p>
+        <p class="card-text">
+            Der Daemon startet nun. Den <i>Client</i> starten wir ähnlich:
+        </p>
+        <p class="card-text text-success">cd $HOME/go/bin/loop --loopdir=PATH-TO-YOUR-LOOP-DIR help</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="static/images/loopd.png" class="card-img-top" alt="loop daemon" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Loop daemon</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="static/images/loop.png" class="card-img-top" alt="loopcli" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">
+                Loop CLI für die Interaktion.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Als zweiten Provider installieren wir <i>Boltz</i>. Wie immer klonen wir zuerst das Repo:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone https://github.com/BoltzExchange/boltz-lnd.git && cd boltz-lnd</p>
+        <p class="card-text">
+            Boltz ist ebenfals in Golang geschrieben. Wir geben wieder an wo Go gefunden werden kann und starten den <i>build process</i>:
+        </p>
+        <p class="card-text text-success">export PATH=$PATH:/usr/local/go/bin && export GOPATH=$HOME/go && go mod vendor && make build</p>
+        <p class="card-text">
+            Auch hier erhalten wir wieder zwei ausführbare Dateien (daemon/client). Der Boltz daemon (boltzd) benötigt auch wieder ein paar Informationen
+            um korrekt arbeiten zu können (datadir/certificate/macaroon). Es ist möglich eine Konfigurationsdatei (*.toml) anzulegen. Wir benutzen wie bei Loop
+            die <i>command line</i>. Vorher erstellen wir einen Ordner auf unseren externen HD für die Daten. Den daemon startet man wie folgt:
+        </p>
+        <p class="card-text text-success">$HOME/go/bin/boltzd --datadir=PATH-TO-YOUR-DATA-DIR --lnd.certificate=PATH-TO-LND/tls.cert --lnd.macaroon=PATH-TO-LND/data/chain/bitcoin/mainnet/admin.macaroon</p>
+        <p class="card-text">
+            Um den <i>Client</i> zu starten muss lediglich der Pfad zum Ordner angegeben werden:
+        </p>
+        <p class="card-text text-success">$HOME/go/bin/boltzcli --datadir=PATH-TO-YOUR-DATA-DIR help</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="static/images/boltzd.png" class="card-img-top" alt="boltz daemon" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Boltz daemon</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="static/images/boltzcli.png" class="card-img-top" alt="boltzcli" style="max-width: 100%; max-height: 70%;">
+          <div class="card-body">
+            <p class="card-text text-center">
+                Boltz CLI für die Interaktion.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Abschliessend (für heute) installieren wir eine graphische Benutzeroberfläche, um unseren Node bequem bedienen zu können. Wir nutzen dafür RTL (Ride the Lightning). RTL ist
+            in Javascript geschrieben. Persönlich bin ich kein Freund von JS - aber ich habe bisher noch nichts besseres gefunden das alle Ansprüche erfüllt. Für RTL benötigen wir <i>nodejs/npm</i>. In
+            den offiziellen Paketquellen steht zum jetzigen Zeitpunkt nur Version 12 zur Verfügung. Wir müssen also erst eine aktuelle Version (hier 18) installieren:
+        </p>
+        <p class="card-text text-success">sudo cd $HOME/Downloads curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt install nodejs -y</p>
+        <p class="card-text">
+            Node ist jetzt installiert. Nun klonen/installieren wir RTL:
+        </p>
+        <p class="card-text text-success">cd $HOME/.git && git clone https://github.com/Ride-The-Lightning/RTL.git && cd RTL && npm install --omit=dev</p>
+        <p class="card-text">
+            RTL benötigt eine Konfigurationsdatei um alle Elemente korrekt einbinden und darstellen zu können. Wir kopieren die Beispieldatei und bearbeiten sie nach unseren Wünschen:
+        </p>
+        <p class="card-text text-success">mv Sample-RTL-Config.json RTL-Config.json && nano RTL-Config.json</p>
+
+      </div>
+    </div>
+
+    <div class="card border-success h-100" style="width: 90%; margin-left: 5%;">
+      <img src="static/images/rtlconfig.png" class="card-img-top" alt="rtl config" style="max-width: 100%; max-height: 80%;">
+      <div class="card-body">
+        <p class="card-text text-center">Hier die RTL-Konfigurationsdatei für unseren Node.</p>
+      </div>
+    </div>
+
+	<div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Wenn wir alle Änderungen vorgenommen ist RTL über Port 3000 erreichbar (localhost:3000). Wir starten RTL mit:
+        </p>
+        <p class="card-text text-success">node rtl</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card border-success h-100" style="width: 90%; margin-left: 10%;">
+          <img src="static/images/rtl.png" class="card-img-top" alt="rtl dash" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">RTL Dashboard.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card border-success h-100" style="width: 90%;">
+          <img src="static/images/overview.png" class="card-img-top" alt="overview" style="max-width: 100%; max-height: 80%;">
+          <div class="card-body">
+            <p class="card-text text-center">Unsere allgemeine Übersicht.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 90%; margin-left: 5%; margin-top: 2%;">
+      <div class="card-body">
+        <p class="card-text">
+            Damit sind alle Vorbereitungen abgeschlossen. Bis zum nächsten Workshop werde ich ein paar Sats auf unsere Wallet transferieren. Dann werden wir unsere ersten
+            Kanäle eröffnen und uns um das <i>channel balance management</i> kümmern.
         </p>
       </div>
     </div>
